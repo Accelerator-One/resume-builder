@@ -1,0 +1,42 @@
+#_mm-preloader {
+    background: lightcyan;
+    box-shadow: 0 0 100px violet;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10px;
+    width: 80px;
+    height: 80px;
+    z-index: 300;
+    border-radius: 50%;
+}
+
+#_mm-preloader>#_mm-indicator {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70%;
+    height: 70%;
+    border: 8px solid turquoise;
+    border-right-color: red;
+    border-top-color: green;
+    border-left-color: yellow;
+    border-bottom-color: dodgerblue;
+    border-radius: 50%;
+    animation: 2.0s linear mm-spin infinite;
+}
+
+@keyframes mm-spin {
+    from {
+        transform: translate(-50%, -50%) rotateZ(0deg);
+    }
+    to {
+        transform: translate(-50%, -50%) rotateZ(360deg);
+    }
+}
+
+body {
+    background-color: #f5f5ef;
+}

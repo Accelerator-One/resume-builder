@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Resume builder</title>
+
+    <!-- bootstrap assets -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous">
+        </script>
+
+    <!-- local assets -->
+    <link rel="stylesheet" href="style.css" />
+    <script src="index.js"></script>
+
+</head>
+
+<body>
+
+    <!-- Editor screen -->
+    <div id='editor' class='content'>
+
+        <form class='row'>
+
+            <h4 style="text-align:center">User Details</h4>
+
+            <!-- Personal Info -->
+            <div class="col-sm-8">
+
+                <label for="name" class="form-label">Name :</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="name" required placeholder="Your name here" />
+                    <div class='invalid-feedback'> Name cannot be empty </div>
+                </div>
+
+                <br />
+
+                <label for="email" class="form-label">Email :</label>
+                <div class="input-group">
+                    <input type="email" class="form-control" id="email" required placeholder="Your email here" />
+                    <div class='invalid-feedback'> Invalid email </div>
+                </div>
+
+                <br />
+
+                <label for="phone" class="form-label">Phone :</label>
+                <div class="input-group">
+                    <input type="tel" class="form-control" id="phone" required placeholder="Your mobile number" />
+                    <div class='invalid-feedback'> Phone needs to be 10 digit number </div>
+                </div>
+
+            </div>
+
+            <!-- Spacer -->
+            <div class="col-sm-10">
+                <br />&nbsp;<br />
+            </div>
+
+            <!-- Qualification entry -->
+            <div class="card col-sm-8" style="padding:12px">
+
+                <h5> Add Qualification </h5>
+
+                <div class="input-group">
+                    <input type="text" class="form-control" id="university" required placeholder="University name" />
+                    <div class='invalid-feedback'> University name cannot be empty </div>
+                </div>
+
+                <br />
+
+                <div class="input-group">
+                    <input type="text" class="form-control" id="course" required placeholder="Stream" />
+                    <div class='invalid-feedback'> Course cannot be empty </div>
+                </div>
+
+                <br />
+
+                <div class="input-group">
+                    <input type="number" class="form-control" id="cstart" required placeholder="Start year" />
+                    <div class='invalid-feedback'> Not a valid year (1980-2021) </div>
+                </div>
+
+                <br />
+
+                <div class="input-group">
+                    <input type="number" class="form-control" id="cend" required placeholder="End year" />
+                    <div class='invalid-feedback'> Not a valid year (1980-2025)</div>
+                </div>
+
+                <br />
+
+                <button id='addQual' type="button" class="btn btn-primary">Add +</button>
+
+                <br />
+
+                <h6>Qualifications :</h6>
+
+                <br />
+
+                <div id="qualList">
+                    <!-- Qualifications will be appended here -->
+                </div>
+
+            </div>
+
+            <!-- Spacer -->
+            <div class="col-sm-10">
+                <br />&nbsp;<br />
+            </div>
+
+            <!-- Project entry -->
+            <div class=" card col-sm-8" style="padding:12px">
+
+                <h5> Add Project </h5>
+
+                <div class="input-group">
+                    <input type="text" class="form-control" id="title" required placeholder="Title" />
+                    <div class='invalid-feedback'> Title cannot be empty </div>
+                </div>
+
+                <br />
+
+                <div class="input-group">
+                    <input type="text" class="form-control" id="skills" required placeholder="Skills" />
+                    <div class='invalid-feedback'> Skills cannot be empty </div>
+                </div>
+
+                <br />
+
+                <div class="input-group">
+                    <input type="text" class="form-control" id="description" required placeholder="Description" />
+                    <div class='invalid-feedback'> Description cannot be empty </div>
+                </div>
+
+                <br />
+
+                <button id='addProject' type="button" class="btn btn-primary">Add +</button>
+
+                <br />
+
+                <h6>Projects :</h6>
+
+                <br />
+
+                <div id="projList">
+                    <!-- Projects will be appended here -->
+                </div>
+
+            </div>
+
+        </form>
+    </div>
+
+    <!-- Viewer screen -->
+    <div id='viewer' class='hide content'>
+
+        <h4 class='display-2' id='nameView'></h4>
+
+        <br />
+
+        <h6 id='emailView'></h6>
+        <h6 id='phoneView'></h6>
+
+        <br />
+
+        <div class='row'>
+
+            <h4> Qualifications </h4>
+            <div id='qualView' class='col-sm-8'></div>
+
+            <br />
+
+            <h4>Projects</h4>
+            <div id='projView' class='col-sm-8'></div>
+
+        </div>
+
+    </div>
+
+    <!-- Swap button -->
+    <button id='swap' type="button" class="btn btn-primary">Submit</button>
+
+</body>
+</html>
