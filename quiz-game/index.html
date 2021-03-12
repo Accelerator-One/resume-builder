@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>quiz-game</title>
+
+    <link rel='stylesheet' href="style.css"/>    
+
+</head>
+<body>
+    
+    <nav id='navbar'>
+        <h4>Quiz score : <span id="score">0</span></h4>
+    </nav>
+
+    <div id='content'>
+        <span id='qid'>id</span> &nbsp; <span id='ques'>Question</span>
+        <br/><br/>
+
+        <input type="radio" name='opt' id='a' value=1 onclick='selected=1' />
+            <label id='text1' for='a'>A</label> <br/>
+        <input type="radio" name='opt' id='b' value=2 onclick='selected=2' />
+            <label id='text2' for='b'>B</label> <br/>
+        <input type="radio" name='opt' id='c' value=3 onclick='selected=3' />
+            <label id='text3' for='c'>C</label> <br/>
+        <input type="radio" name='opt' id='d' value=4 onclick='selected=4' />
+            <label id='text4' for='d'>D</label> 
+        
+        <br/><br/>
+
+        <button id='submit'>Submit</button>
+        <button id='restart'>Restart</button>
+    
+    </div>
+
+    <script src="index.js"></script>
+
+</body>
+</html>

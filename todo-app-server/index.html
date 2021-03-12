@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To Do app-server</title>
+    <style>
+        body {
+            width: 100vw;
+            height: 100vh;
+            overflow-x: hidden;
+            margin: 0px !important;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .panel {
+            width: 49vw;
+            height: 100vh;
+            margin: 4px;
+            display: inline-table;
+        }
+
+        #task-list {
+            background-color: lightgray;
+        }
+
+        #list {
+            position: relative;
+            left: 5vw;
+        }
+
+        .item {
+            background-color: grey;
+            border-radius: 4px;
+            width: 36vw;
+            margin: 4px;
+            padding: 8px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        span.close {
+            padding: 4px;
+            border-radius: 4px;
+        }
+
+        span.close:hover {
+            background-color: red;
+        }
+
+        input,
+        input:focus {
+            font-size: xx-large;
+            font-weight: bolder;
+            border: 0px solid transparent;
+        }
+    </style>
+
+</head>
+<body>
+
+    <div class='panel' id="task-list">
+        <br />
+
+        <h2 style="text-align: center;"> TASK LIST </h2>
+        <br />
+
+        <p style="text-align: center;">
+            Add tasks by typing to the right and press enter.
+        </p>
+
+        <br />
+
+        <div id="list">
+            <!-- Items appended here -->
+
+        </div>
+
+    </div>
+
+    <div class='panel' id="entry-panel">
+        <br />
+        <input id='input' type="text" value="" placeholder="I need to..." />
+    </div>
+
+    <script async defer type="text/javascript">
+
+        // change completion status
+        async function changeStatus(uid) {
+
+            // update on server
+            await fetch("./change", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ data: uid })
+            })
+                .then(res => console.log(res))
+                .catch(err => console.log(err));
+
+            // update on client
+            const ref = document.getElementById(`input-${uid}`);
+            ref.checked = !ref.checked;
+
+        }
+
+        // delete ID
+        async function deleteId(uid) {
+
+            document.getElementById(uid).remove();
+
+            // remove from server
+            await fetch("./remove", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ data: uid })
+            })
+                .then(res => res.json())
+                .then(res => console.log(res))
+                .catch(err => console.log(err));
+
+        }
+
+        // add data on server
+        document.getElementById("input").addEventListener("keypress", async function (evt) {
+
+            if (evt.charCode == 13) {
+
+                let uid = null;
+                let data = evt.target.value;
+
+                // fetch assigned "uid"
+                await fetch("./add", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ data })
+                })
+                    .then(res => res.json())
+                    .then(res => {
+                        uid = res;
+                        console.log(uid);
+                    })
+                    .catch(err => console.log(err));
+
+                let el = document.createElement("div");
+
+                if (data.length === 0)
+                    return;
+
+                el.classList.add("item");
+
+                el.id = uid;
+                let template = `<span id=text-${uid}>${data}</span> <span><input type="checkbox" id="input-${uid}" />&nbsp; <span id="delete-${uid}" class="close">x </span></span>`;
+
+                el.innerHTML = template;
+                document.getElementById("list").appendChild(el);
+
+                document.getElementById(`input-${uid}`).addEventListener("click", (evt) => {
+                    evt.target.checked = !evt.target.checked;
+
+                    let ref = document.getElementById(`text-${uid}`);
+                    if (evt.target.checked !== true)
+                        ref.style.textDecoration = "line-through";
+                    else
+                        ref.style.textDecoration = "none";
+
+                    return changeStatus(uid);
+                });
+
+                document.getElementById(`delete-${uid}`).addEventListener("click", (evt) => {
+                    return deleteId(uid);
+                });
+
+                evt.target.value = "";
+
+            }
+        });
+
+        // fetch data present on server
+        fetch("./list", {
+            method: "POST"
+        })
+            .then(res => res.json())
+            .then(res => {
+
+                res.forEach(element => {
+
+                    let el = document.createElement("div");
+                    el.classList.add("item");
+                    el.id = element.id;
+
+                    let template = `<span id="text-${element.id}">${element.description}</span> <span><input type="checkbox" id="input-${element.id}" />&nbsp; <span id="delete-${element.id}" class="close">x </span></span>`;
+
+                    el.innerHTML = template;
+                    document.getElementById("list").appendChild(el);
+
+                    document.getElementById(`input-${element.id}`).checked = element.completed;
+                    if (element.completed === true)
+                        document.getElementById(`text-${element.id}`).style.textDecoration = "line-through";
+
+                    // status listener    
+                    document.getElementById(`input-${element.id}`).addEventListener("click", (evt) => {
+
+                        evt.target.checked = !evt.target.checked;
+
+                        let ref = document.getElementById(`text-${element.id}`);
+                        if (evt.target.checked !== true)
+                            ref.style.textDecoration = "line-through";
+                        else
+                            ref.style.textDecoration = "none";
+
+                        return changeStatus(element.id);
+                    });
+
+                    // delete listener
+                    document.getElementById(`delete-${element.id}`).addEventListener("click", (evt) => {
+                        return deleteId(element.id);
+                    });
+
+                    id = element.id + 1;
+
+                });
+            });
+
+    </script>
+
+</body>
+</html>
