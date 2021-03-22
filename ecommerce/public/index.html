@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ECOM</title>
+
+    <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css" />
+    <script defer async src="bootstrap/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="index.css">
+    <script src="index.js"></script>
+
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar fixed-top navbar-light bg-light">
+        <div class="container-fluid ">
+
+            <a class="navbar-brand" href="#"> ECOM </a>
+
+            <span id="panel">
+                <button id='swap' class="btn me-3" type="button">
+                    <img src="icons/icons/cart3.svg" alt="cart" width="24" height="24" />
+                </button>
+                <button class="btn btn-outline-danger me-2" type="button"> Logout </button>
+            </span>
+
+        </div>
+    </nav>
+
+    <br/><br/>
+
+    <!-- Content panel -->
+    <section id="content" class="row">
+        <!-- Items from server are appended here -->
+    </section>
+
+    <section id="cart" class='row p-4'>
+        <!-- Cart will be displayed here -->
+    </section>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="productModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Product Description</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body row">
+                    <div class="col-sm-6" style="display: flex;">
+                        <img id="modal-url" class="product" style="justify-content: center;" src="assets/a1.jpeg" />
+                    </div>
+                    <div class="col-sm-6">
+                        <h5 id="modal-name" class="card-title"></h5>
+                        <p id="modal-price" class="card-text"></p>
+                        <p id="modal-description" class="card-text"></p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

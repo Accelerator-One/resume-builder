@@ -1,0 +1,31 @@
+[{
+    "name": "SAMSUNG Galaxy M11",
+    "price": "10690",
+    "url": "/assets/a1.jpeg",
+    "description": "A B C D E F G H I J K L M N O P Q R S T U V W X Y Z"
+},{
+    "name": "POCO X2",
+    "price": "14999",
+    "url": "/assets/a2.jpeg",
+    "description": "A B C D E F G H I J K L M N O P Q R S T U V W X Y Z"
+},{
+    "name": "MOTOROLA Edge+",
+    "price": "64999",
+    "url": "/assets/a3.jpeg",
+    "description": "A B C D E F G H I J K L M N O P Q R S T U V W X Y Z"
+},{
+    "name": "Realme 6 Pro",
+    "price": "17999",
+    "url": "/assets/a4.jpeg",
+    "description": "A B C D E F G H I J K L M N O P Q R S T U V W X Y Z"
+},{
+    "name": "Realme X3 Superzoom",
+    "price": "27999",
+    "url": "/assets/a5.jpeg",
+    "description": "A B C D E F G H I J K L M N O P Q R S T U V W X Y Z"
+},{
+    "name": "Vivo V19",
+    "price": "24990",
+    "url": "/assets/a6.jpeg",
+    "description": "A B C D E F G H I J K L M N O P Q R S T U V W X Y Z"
+}]
