@@ -1,5 +1,128 @@
 window.addEventListener('load', async () => {
+
+    // Website state
+    let products = null;
+    let mp = new Map();
+    let loggedIn = false;
+
+    // UI reference
+    const ref2 = document.getElementById('main-page');
+    const ref1 = document.getElementById('login-page');
+
+    // CART: sync management
+    function mapResponseToCart(res) {
+      
+        if(res === undefined)
+          return;
+
+        res.forEach(data=> {
+            mp[data.url] = data
+        });
+
+    }
+
+    function parseToArray() {
+     
+      let result = [];
+
+      for(key in mp) {
+        result.push(mp[key]);
+      }
+
+      // console.log(result);
+      return result;
+    }
+
+    // Initial UI rendering
+    await fetch("/auth",{ method: "GET" })
+    .then(res => {
+
+        if(res.status === 401) {
+            loggedIn = false;
+            return undefined;
+        }
+        else {
+            loggedIn = true;
+            return res.json();
+        }
+    })
+    .then(res => mapResponseToCart(res));
     
+
+    if(loggedIn === true) {
+       document.getElementById('main-page').classList.remove('hide');
+       ref1.style.height = '0px';
+    }
+    else {
+       document.getElementById('login-page').classList.remove('hide');
+       ref2.style.height = '0px';
+    }
+
+    // Login Handler
+    document.getElementById('login').addEventListener('click',async (evt) => {
+
+        let email = document.getElementById('email').value;
+        let passwd = document.getElementById('passwd').value;
+
+        if(email.length === 0 || passwd.length === 0 ) {
+            alert("Email/password not provided!");
+            return;
+        };
+
+        // Auth login (returns cart if successful)
+        await fetch("/login",{
+            method: "POST",
+            headers: {
+                "Content-type": "application/json;charset=UTF-8"
+            },
+            body: JSON.stringify({email, passwd})
+        })
+        .then(res => {
+
+            if(res.status === 401) {
+                loggedIn = false;
+                alert("User name/password is incorrect!");
+                return undefined;
+            }
+
+            loggedIn = true;
+            return res.json();
+        })
+        .then(res => mapResponseToCart(res))
+        .catch(err=> console.log(err));
+
+        if(loggedIn === false)
+          return;
+
+        const ref = document.getElementById('login-page');
+        ref.classList.add('hide');
+        ref.style.height = '0px';
+
+        document.getElementById('main-page').classList.remove('hide');
+
+    });
+
+    // Logout Handler
+    document.getElementById('logout').addEventListener('click', async () => {
+
+        // Auth logout
+        await fetch("/logout",{ method: "GET" })
+        .then(res => {
+            if(res.status === 401) {
+                alert("Logout Unsuccessful! Please try again");
+                throw Error("Server Declined!");
+            }
+            loggedIn = false;
+        })
+        .catch(err=> console.log(err));
+
+        if(loggedIn === true)
+          return;
+    
+        window.location.reload();
+
+    });
+
     document.getElementById('cart').classList.add('hide');
 
     // Add product
@@ -39,9 +162,6 @@ window.addEventListener('load', async () => {
     };
 
     // Fetch products from inventory
-    let products = null;
-    let mp = new Map();
-
     await fetch("/fetch",{ method : "GET" })
         .then(res => res.json())
         .then(res => {
@@ -51,7 +171,8 @@ window.addEventListener('load', async () => {
 
     await products.forEach(data => {
         addProduct(data.name, data.price, data.url, data.description);
-        mp[data.url] = data;
+        if(mp[data.url] === undefined)
+           mp[data.url] = data;
     });
 
     // Modal configuration
@@ -120,7 +241,7 @@ window.addEventListener('load', async () => {
             // console.log(count);
 
             
-            if(mp[url].quantity === undefined)
+            if(mp[url]?.quantity === undefined)
                 mp[url].quantity = 0;
 
             mp[url].quantity += parseInt(count.value);
@@ -237,5 +358,28 @@ window.addEventListener('load', async () => {
         }
 
     });
+
+    // sync controller
+    setInterval(async () => {
+
+      if(loggedIn) {
+
+        await fetch('/sync', {
+            method: 'POST',
+            headers: {
+                "Content-type": "application/json;charset=UTF-8"
+            },
+            body: JSON.stringify({userCart: parseToArray()})
+        })
+        .then(res => {
+            if(res.status === 401) {
+                throw Error('Sync error!');
+            }
+        })
+        .catch(err => err);
+
+      }
+
+    }, 500);
 
 });
